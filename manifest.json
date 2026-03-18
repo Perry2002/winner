@@ -1,0 +1,19 @@
+{
+  "name": "Winner's Exchange",
+  "short_name": "W-Exchange",
+  "description": "Calculatrice de transfert Maroc ↔ Bénin",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#09152a",
+  "theme_color": "#09152a",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

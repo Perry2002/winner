@@ -4,23 +4,14 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 <title>Winner's Exchange</title>
-
-<!-- ══════════ PWA META TAGS ══════════ -->
-<meta name="application-name"                content="W-Exchange"/>
-<meta name="description"                     content="Calculatrice de transfert Maroc ↔ Bénin"/>
-<meta name="theme-color"                     content="#09152a"/>
-<meta name="mobile-web-app-capable"          content="yes"/>
-<!-- iOS Safari -->
-<meta name="apple-mobile-web-app-capable"    content="yes"/>
-<meta name="apple-mobile-web-app-title"      content="W-Exchange"/>
+<meta name="theme-color" content="#09152a"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="W-Exchange"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<!-- Windows / Edge -->
-<meta name="msapplication-TileColor"         content="#09152a"/>
-<meta name="msapplication-tap-highlight"     content="no"/>
-
-<!-- Polices -->
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -31,24 +22,21 @@
   --gold:   #c9970e;
   --gold2:  #f0c040;
   --dim:    rgba(200,151,14,.13);
-  --border: rgba(200,151,14,.2);
+  --border: rgba(200,151,14,.22);
   --white:  #eeeae0;
   --muted:  #6a80a0;
   --red:    #e07878;
   --green:  #5ecb8f;
 }
 
-html, body {
-  height: 100%;
-  overscroll-behavior: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
+html { height: 100%; }
 body {
   min-height: 100vh;
   min-height: 100dvh;
   background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: 'DM Sans', sans-serif;
   color: var(--white);
   padding: 20px;
@@ -57,136 +45,187 @@ body {
   background-image:
     radial-gradient(ellipse 80% 40% at 10% 0%, rgba(200,151,14,.07) 0%, transparent 55%),
     radial-gradient(ellipse 50% 50% at 90% 100%, rgba(5,15,40,.7) 0%, transparent 60%);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
 }
 
-.wrap { width: 100%; max-width: 400px; animation: up .5s ease both; }
-@keyframes up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+.wrap {
+  width: 100%;
+  max-width: 400px;
+  animation: up .45s ease both;
+}
+@keyframes up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-/* ── HEADER ── */
-.hd { text-align: center; margin-bottom: 24px; }
+/* HEADER */
+.hd { text-align: center; margin-bottom: 22px; }
 .hd h1 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.9rem; letter-spacing: 3px; line-height: 1;
+  font-size: 2.8rem; letter-spacing: 3px; line-height: 1;
   background: linear-gradient(135deg, var(--gold2), var(--gold));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.hd p { font-size: .72rem; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; margin-top: 3px; }
+.hd p { font-size: .7rem; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; margin-top: 3px; }
 .rate-pill {
   display: inline-flex; align-items: center; gap: 6px;
   margin-top: 10px; padding: 5px 16px;
-  background: var(--dim); border: 1px solid var(--border); border-radius: 999px;
-  font-size: .78rem; color: var(--gold2); font-weight: 500;
+  background: var(--dim); border: 1px solid var(--border);
+  border-radius: 999px; font-size: .78rem; color: var(--gold2); font-weight: 500;
 }
 
-/* ── INSTALL BANNER ── */
+/* INSTALL BANNER */
 #install-bar {
   display: none;
-  align-items: center; justify-content: space-between; gap: 10px;
+  align-items: center; gap: 10px;
   background: var(--dim); border: 1px solid var(--border);
   border-radius: 14px; padding: 10px 14px;
-  margin-bottom: 16px; font-size: .78rem; color: var(--gold2);
+  margin-bottom: 14px; font-size: .78rem; color: var(--gold2);
 }
 #install-bar.show { display: flex; }
-#install-bar button {
-  all: unset; cursor: pointer;
+#install-bar span { flex: 1; }
+#install-bar .btn-install {
   background: var(--gold); color: var(--bg);
-  border-radius: 8px; padding: 5px 12px;
-  font-size: .75rem; font-weight: 700; white-space: nowrap;
+  border: none; border-radius: 8px; padding: 6px 14px;
+  font-size: .75rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
 }
-#install-bar .dismiss { background: none; color: var(--muted); padding: 4px; font-size: 1rem; }
+#install-bar .btn-close {
+  background: none; border: none; color: var(--muted);
+  font-size: 1.1rem; cursor: pointer; padding: 2px 4px;
+}
 
-/* iOS hint */
+/* IOS HINT */
 #ios-hint {
   display: none;
   background: var(--dim); border: 1px solid var(--border);
-  border-radius: 14px; padding: 12px 14px;
-  margin-bottom: 16px; font-size: .75rem; color: var(--gold2);
-  text-align: center; line-height: 1.6;
+  border-radius: 14px; padding: 12px 14px 12px 16px;
+  margin-bottom: 14px; font-size: .75rem; color: var(--gold2);
+  line-height: 1.7; position: relative;
 }
 #ios-hint.show { display: block; }
-#ios-hint .close-hint { cursor: pointer; float: right; opacity: .5; font-size: 1rem; margin-top:-2px; }
+#ios-hint .btn-close {
+  background: none; border: none; color: var(--muted);
+  font-size: 1.1rem; cursor: pointer; float: right; margin-top: -2px;
+}
 
-/* ── CARD ── */
+/* CARD */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 24px;
-  padding: 24px 22px 22px;
-  box-shadow: 0 28px 70px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
+  padding: 22px 20px 20px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04);
 }
 
-/* ── CURRENCY BLOCK ── */
+/* CURRENCY BLOCK */
 .cblock {
   background: rgba(255,255,255,.04);
   border: 1.5px solid var(--border);
   border-radius: 16px;
-  padding: 16px 18px;
+  padding: 14px 16px;
   transition: border-color .2s, box-shadow .2s;
+  cursor: text;
 }
 .cblock.active {
   border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(200,151,14,.1);
 }
-.cblock-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.flag-name  { display: flex; align-items: center; gap: 8px; }
-.flag  { font-size: 1.5rem; line-height: 1; }
-.cname { font-size: .75rem; font-weight: 600; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
-.role-badge { font-size: .65rem; font-weight: 600; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 999px; text-transform: uppercase; }
+.cblock-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.flag-name { display: flex; align-items: center; gap: 8px; }
+.flag  { font-size: 1.45rem; line-height: 1; }
+.cname { font-size: .72rem; font-weight: 600; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+
+.role-badge {
+  font-size: .62rem; font-weight: 700; letter-spacing: 1.5px;
+  padding: 3px 10px; border-radius: 999px; text-transform: uppercase;
+}
 .role-badge.send { background: rgba(94,203,143,.12); color: var(--green); }
 .role-badge.recv { background: rgba(200,151,14,.15); color: var(--gold2); }
 
-.amount-row { display: flex; align-items: baseline; gap: 8px; }
+.amount-row { display: flex; align-items: center; gap: 8px; }
 .amount-row input {
-  flex: 1; background: none; border: none; outline: none;
+  flex: 1; min-width: 0;
+  background: transparent; border: none; outline: none;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.4rem; color: var(--white); letter-spacing: 1px; width: 100%;
+  font-size: 2.3rem; color: var(--white); letter-spacing: 1px;
   -moz-appearance: textfield;
 }
 .amount-row input::-webkit-outer-spin-button,
 .amount-row input::-webkit-inner-spin-button { -webkit-appearance: none; }
-.amount-row input::placeholder { color: rgba(255,255,255,.18); }
-.currency-label { font-size: .78rem; font-weight: 700; letter-spacing: 2px; color: var(--gold); flex-shrink: 0; }
+.amount-row input::placeholder { color: rgba(255,255,255,.15); }
+.cur-lbl {
+  font-size: .75rem; font-weight: 700; letter-spacing: 2px;
+  color: var(--gold); flex-shrink: 0;
+}
 
-/* ── SWAP ── */
+/* SWAP */
 .swap-zone {
-  position: relative; height: 36px;
-  display: flex; align-items: center; justify-content: center; margin: 8px 0; z-index: 1;
+  position: relative; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 6px 0;
 }
 .swap-zone::before {
   content: ''; position: absolute; left: 0; right: 0; top: 50%;
-  border-top: 1px dashed var(--border);
+  border-top: 1px dashed rgba(200,151,14,.25);
 }
 .swap-btn {
-  all: unset; cursor: pointer;
+  position: relative; z-index: 2;
   width: 38px; height: 38px;
-  background: var(--card2); border: 1.5px solid var(--border); border-radius: 50%;
+  background: var(--card2); border: 1.5px solid var(--border);
+  border-radius: 50%; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1rem; transition: all .2s ease; position: relative; z-index: 2;
+  font-size: 1rem; color: var(--white);
+  transition: background .2s, border-color .2s, transform .25s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
 }
-.swap-btn:active { background: var(--gold); border-color: var(--gold); color: var(--bg); transform: rotate(180deg); }
+.swap-btn:active {
+  background: var(--gold); border-color: var(--gold);
+  color: var(--bg); transform: rotate(180deg);
+}
 
-/* ── FEE STRIP ── */
+/* FEE STRIP */
 .fee-strip {
-  margin-top: 18px; background: var(--dim); border: 1px solid var(--border);
-  border-radius: 12px; padding: 12px 16px;
-  display: flex; flex-direction: column; gap: 7px; min-height: 70px;
+  margin-top: 16px;
+  background: var(--dim); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 14px; min-height: 68px;
 }
-.fee-row { display: flex; justify-content: space-between; align-items: center; }
-.fee-row + .fee-row { border-top: 1px dashed rgba(200,151,14,.1); padding-top: 7px; }
-.fk { font-size: .7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+.fee-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 0;
+}
+.fee-row + .fee-row {
+  border-top: 1px dashed rgba(200,151,14,.1);
+  margin-top: 4px; padding-top: 9px;
+}
+.fk { font-size: .68rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
 .fv { font-size: .88rem; font-weight: 600; }
 .fv.fee-val   { color: var(--red); }
 .fv.total-val { color: var(--white); }
-.fee-idle { text-align: center; color: var(--muted); font-size: .8rem; padding: 8px 0; opacity: .55; }
+.fee-idle {
+  text-align: center; color: var(--muted);
+  font-size: .78rem; padding: 10px 0; opacity: .55;
+}
+.tranche {
+  margin-top: 9px; text-align: center;
+  font-size: .66rem; color: var(--muted); min-height: 14px;
+}
+.tranche b { color: var(--gold); }
 
-.tranche-note { margin-top: 10px; text-align: center; font-size: .68rem; color: var(--muted); min-height: 14px; }
-.tranche-note b { color: var(--gold); }
-
-/* ── FOOTER ── */
-.foot { text-align: center; margin-top: 20px; font-size: .68rem; color: var(--muted); opacity: .5; }
+/* FOOTER */
+.foot { text-align: center; margin-top: 18px; font-size: .67rem; color: var(--muted); opacity: .5; }
 </style>
 </head>
 <body>
+
 <div class="wrap">
 
   <div class="hd">
@@ -195,22 +234,24 @@ body {
     <div class="rate-pill">⚡ 1 Dirham = 60 FCFA</div>
   </div>
 
-  <!-- Bannière installation Android/Desktop -->
+  <!-- Bannière install Android -->
   <div id="install-bar">
     <span>📲 Installer sur votre téléphone</span>
-    <button onclick="installApp()">Installer</button>
-    <button class="dismiss" onclick="dismissInstall()">✕</button>
+    <button class="btn-install" id="btn-install">Installer</button>
+    <button class="btn-close" id="btn-dismiss">✕</button>
   </div>
 
-  <!-- Hint iOS -->
+  <!-- Guide iOS -->
   <div id="ios-hint">
-    <span class="close-hint" onclick="this.parentElement.classList.remove('show')">✕</span>
-    Pour installer : appuyez sur <strong>⬆ Partager</strong> puis<br/>
-    <strong>« Sur l'écran d'accueil »</strong>
+    <button class="btn-close" id="btn-close-ios">✕</button>
+    Pour installer l'app :<br/>
+    Appuyez sur <strong>⬆ Partager</strong> en bas de Safari,<br/>
+    puis <strong>« Sur l'écran d'accueil »</strong> ➜ <strong>Ajouter</strong>
   </div>
 
   <div class="card">
 
+    <!-- Bloc ENVOYEUR -->
     <div class="cblock" id="top-block">
       <div class="cblock-top">
         <div class="flag-name">
@@ -220,16 +261,17 @@ body {
         <span class="role-badge send">Envoie</span>
       </div>
       <div class="amount-row">
-        <input type="number" id="top-input" placeholder="0" min="0"
-               inputmode="numeric" oninput="onTop()" onfocus="focusTop()"/>
-        <span class="currency-label" id="top-unit">FCFA</span>
+        <input type="number" id="top-input" placeholder="0" min="0" inputmode="decimal"/>
+        <span class="cur-lbl" id="top-unit">FCFA</span>
       </div>
     </div>
 
+    <!-- Bouton swap -->
     <div class="swap-zone">
-      <button class="swap-btn" onclick="swap()">⇅</button>
+      <button class="swap-btn" id="swap-btn" type="button">⇅</button>
     </div>
 
+    <!-- Bloc RECEVEUR -->
     <div class="cblock" id="bot-block">
       <div class="cblock-top">
         <div class="flag-name">
@@ -239,12 +281,12 @@ body {
         <span class="role-badge recv">Reçoit</span>
       </div>
       <div class="amount-row">
-        <input type="number" id="bot-input" placeholder="0" min="0"
-               inputmode="numeric" oninput="onBot()" onfocus="focusBot()"/>
-        <span class="currency-label" id="bot-unit">DHS</span>
+        <input type="number" id="bot-input" placeholder="0" min="0" inputmode="decimal"/>
+        <span class="cur-lbl" id="bot-unit">DHS</span>
       </div>
     </div>
 
+    <!-- Résultat frais -->
     <div class="fee-strip">
       <div class="fee-idle" id="fee-idle">Entrez un montant pour voir les frais</div>
       <div id="fee-rows" style="display:none">
@@ -258,7 +300,7 @@ body {
         </div>
       </div>
     </div>
-    <div class="tranche-note" id="tranche-note"></div>
+    <div class="tranche" id="tranche"></div>
 
   </div>
 
@@ -267,145 +309,97 @@ body {
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════════════
-//  SERVICE WORKER (cache offline)
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  SERVICE WORKER
+// ═══════════════════════════════════════════════
 if ('serviceWorker' in navigator) {
-  const swCode = `
-    const CACHE = 'winners-exchange-v1';
-    self.addEventListener('install', e => {
-      self.skipWaiting();
-    });
-    self.addEventListener('fetch', e => {
-      e.respondWith(
-        caches.open(CACHE).then(cache =>
-          cache.match(e.request).then(cached => {
-            const fresh = fetch(e.request).then(res => {
-              cache.put(e.request, res.clone());
-              return res;
-            }).catch(() => cached);
-            return cached || fresh;
-          })
-        )
-      );
-    });
-  `;
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(() => {});
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
 }
 
-// ══════════════════════════════════════════════════════════════
-//  WEB APP MANIFEST (injecté dynamiquement)
-// ══════════════════════════════════════════════════════════════
-(function() {
-  // Icône SVG inline (bleu marine + emoji billet)
-  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <rect width="512" height="512" rx="110" fill="#09152a"/>
-    <rect x="40" y="180" width="432" height="152" rx="24" fill="#c9970e" opacity=".15"/>
-    <rect x="40" y="180" width="432" height="152" rx="24" fill="none" stroke="#c9970e" stroke-width="10"/>
-    <text x="256" y="296" font-size="110" text-anchor="middle" font-family="serif" fill="#f0c040">💱</text>
-    <text x="256" y="380" font-size="38" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#c9970e" letter-spacing="3">W-EXCHANGE</text>
-  </svg>`;
-  const iconUrl = 'data:image/svg+xml;base64,' + btoa(iconSvg);
-
-  const manifest = {
-    name: "Winner's Exchange",
-    short_name: "W-Exchange",
-    description: "Calculatrice de transfert Maroc ↔ Bénin",
-    start_url: "./",
-    display: "standalone",
-    orientation: "portrait",
-    background_color: "#09152a",
-    theme_color: "#09152a",
-    lang: "fr",
-    icons: [
-      { src: iconUrl, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
-      { src: iconUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
-    ]
-  };
-
-  const link = document.createElement('link');
-  link.rel = 'manifest';
-  link.href = 'data:application/manifest+json,' + encodeURIComponent(JSON.stringify(manifest));
-  document.head.appendChild(link);
-
-  // Apple touch icon
-  const ati = document.createElement('link');
-  ati.rel = 'apple-touch-icon';
-  ati.href = iconUrl;
-  document.head.appendChild(ati);
-})();
-
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  INSTALL PROMPT
-// ══════════════════════════════════════════════════════════════
-let deferredPrompt = null;
+// ═══════════════════════════════════════════════
+var deferredPrompt = null;
 
-window.addEventListener('beforeinstallprompt', e => {
+window.addEventListener('beforeinstallprompt', function(e) {
   e.preventDefault();
   deferredPrompt = e;
   document.getElementById('install-bar').classList.add('show');
 });
 
-function installApp() {
+document.getElementById('btn-install').addEventListener('click', function() {
   if (!deferredPrompt) return;
   deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(() => {
+  deferredPrompt.userChoice.then(function() {
     deferredPrompt = null;
     document.getElementById('install-bar').classList.remove('show');
   });
-}
+});
 
-function dismissInstall() {
+document.getElementById('btn-dismiss').addEventListener('click', function() {
   document.getElementById('install-bar').classList.remove('show');
-}
+});
 
-// iOS : pas de beforeinstallprompt → afficher le hint
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+// iOS
+var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+var isStandalone = window.navigator.standalone === true ||
+                   window.matchMedia('(display-mode: standalone)').matches;
 if (isIOS && !isStandalone) {
   document.getElementById('ios-hint').classList.add('show');
 }
+document.getElementById('btn-close-ios').addEventListener('click', function() {
+  document.getElementById('ios-hint').classList.remove('show');
+});
 
-// ══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  CALCULATRICE
-// ══════════════════════════════════════════════════════════════
-const RATE = 60;
-let dir = 'bm';
-let computing = false;
+// ═══════════════════════════════════════════════
+var RATE = 60;
+var dir = 'bm'; // 'bm' = Bénin→Maroc | 'mb' = Maroc→Bénin
+var computing = false;
 
-const roundFC = n => Math.round(n);
-const roundDH = n => Math.round(n * 100) / 100;
-const fDH = n => roundDH(n).toLocaleString('fr-FR', {minimumFractionDigits:0, maximumFractionDigits:2}) + ' Dhs';
-const fFC = n => roundFC(n).toLocaleString('fr-FR') + ' FCFA';
+function roundFC(n) { return Math.round(n); }
+function roundDH(n) { return Math.round(n * 100) / 100; }
 
-// ── Bénin → Maroc ─────────────────────────────────────────────
+function fDH(n) {
+  return roundDH(n).toLocaleString('fr-FR', {minimumFractionDigits:0, maximumFractionDigits:2}) + ' Dhs';
+}
+function fFC(n) {
+  return roundFC(n).toLocaleString('fr-FR') + ' FCFA';
+}
+
+// ── Bénin→Maroc ──
+// Frais déduits du budget total (en DHS)
 function bmFromBudget(budget) {
   if (budget <= 500) {
-    const fee = 25;
-    return { T: budget - fee, fee, label: '≤ 500 Dhs — frais fixe 25 Dhs' };
+    var fee = 25;
+    return { T: budget - fee, fee: fee, label: '≤ 500 Dhs — frais fixe 25 Dhs' };
   } else if (budget <= 2000) {
-    const fee = budget * 0.045;
-    return { T: budget - fee, fee, label: '501–2 000 Dhs — 4,5%' };
+    var fee = budget * 0.045;
+    return { T: budget - fee, fee: fee, label: '501–2 000 Dhs — 4,5%' };
   } else {
-    const fee = budget * 0.04;
-    return { T: budget - fee, fee, label: '2 001+ Dhs — 4%' };
+    var fee = budget * 0.04;
+    return { T: budget - fee, fee: fee, label: '2 001+ Dhs — 4%' };
   }
 }
 
 function bmFromReceived(T) {
-  let budget = T + 25;
-  if (budget <= 500) return { budget, fee: 25, label: '≤ 500 Dhs — frais fixe 25 Dhs' };
+  // Tranche 1 : budget = T + 25 ≤ 500
+  var budget = T + 25;
+  if (budget <= 500)
+    return { budget: budget, fee: 25, label: '≤ 500 Dhs — frais fixe 25 Dhs' };
+  // Tranche 2 : T = budget * 0.955 → budget = T / 0.955, valide si ≤ 2000
   budget = T / 0.955;
-  if (budget > 500 && budget <= 2000) {
-    return { budget, fee: budget * 0.045, label: '501–2 000 Dhs — 4,5%' };
-  }
+  if (budget <= 2000)
+    return { budget: budget, fee: budget * 0.045, label: '501–2 000 Dhs — 4,5%' };
+  // Tranche 3
   budget = T / 0.96;
-  return { budget, fee: budget * 0.04, label: '2 001+ Dhs — 4%' };
+  return { budget: budget, fee: budget * 0.04, label: '2 001+ Dhs — 4%' };
 }
 
-// ── Maroc → Bénin ─────────────────────────────────────────────
+// ── Maroc→Bénin ──
 function feeMB(fcfa) {
   if (fcfa <= 10000)  return { fee: 10, label: '≤ 10 000 FCFA — 10 Dhs' };
   if (fcfa <= 15000)  return { fee: 15, label: '10 001–15 000 FCFA — 15 Dhs' };
@@ -417,84 +411,92 @@ function feeMB(fcfa) {
 }
 
 function mbFromBudget(budget) {
-  const slabs = [
+  var slabs = [
     {min:0,     max:10000,   fee:10},
     {min:10001, max:15000,   fee:15},
     {min:15001, max:20000,   fee:25},
     {min:20001, max:50000,   fee:35},
     {min:50001, max:75000,   fee:50},
     {min:75001, max:100000,  fee:70},
-    {min:100001,max:Infinity,fee:null},
+    {min:100001,max:Infinity,fee:null}
   ];
-  for (const s of slabs) {
-    const T = s.fee !== null ? (budget - s.fee) * RATE : (budget * RATE) / 1.04;
+  for (var i = 0; i < slabs.length; i++) {
+    var s = slabs[i];
+    var T = s.fee !== null ? (budget - s.fee) * RATE : (budget * RATE) / 1.04;
     if (T >= s.min && T <= s.max && T > 0) {
-      const r = feeMB(T);
-      return { T, fee: r.fee, label: r.label };
+      var r = feeMB(T);
+      return { T: T, fee: r.fee, label: r.label };
     }
   }
   return { T: 0, fee: 0, label: '' };
 }
 
-// ── UI ────────────────────────────────────────────────────────
-function focusTop() {
-  document.getElementById('top-block').classList.add('active');
-  document.getElementById('bot-block').classList.remove('active');
-}
-function focusBot() {
-  document.getElementById('bot-block').classList.add('active');
-  document.getElementById('top-block').classList.remove('active');
-}
+// ── Événements ──
+var topInput = document.getElementById('top-input');
+var botInput = document.getElementById('bot-input');
+var topBlock = document.getElementById('top-block');
+var botBlock = document.getElementById('bot-block');
 
-function onTop() {
+topInput.addEventListener('input', function() {
   if (computing) return;
-  const val = parseFloat(document.getElementById('top-input').value);
-  if (!val || val <= 0) { setField('bot',''); hideResult(); return; }
+  var val = parseFloat(this.value);
+  if (!val || val <= 0) { setField(botInput, ''); hideResult(); return; }
   if (dir === 'bm') {
-    const { T, fee, label } = bmFromBudget(val / RATE);
-    setField('bot', roundDH(T));
-    showResult(fDH(fee), fFC(val), 'Total envoyé', label);
+    var r = bmFromBudget(val / RATE);
+    setField(botInput, roundDH(r.T));
+    showResult(fDH(r.fee), fFC(val), 'Total envoyé', r.label);
   } else {
-    const { T, fee, label } = mbFromBudget(val);
-    setField('bot', roundFC(T));
-    showResult(fDH(fee), fDH(val), 'Total envoyé', label);
+    var r = mbFromBudget(val);
+    setField(botInput, roundFC(r.T));
+    showResult(fDH(r.fee), fDH(val), 'Total envoyé', r.label);
   }
-}
+});
 
-function onBot() {
+botInput.addEventListener('input', function() {
   if (computing) return;
-  const val = parseFloat(document.getElementById('bot-input').value);
-  if (!val || val <= 0) { setField('top',''); hideResult(); return; }
+  var val = parseFloat(this.value);
+  if (!val || val <= 0) { setField(topInput, ''); hideResult(); return; }
   if (dir === 'bm') {
-    const { budget, fee, label } = bmFromReceived(val);
-    const sendFCFA = roundFC(budget * RATE);
-    setField('top', sendFCFA);
-    showResult(fDH(fee), fFC(sendFCFA), 'Total à envoyer', label);
+    var r = bmFromReceived(val);
+    var sendFCFA = roundFC(r.budget * RATE);
+    setField(topInput, sendFCFA);
+    showResult(fDH(r.fee), fFC(sendFCFA), 'Total à envoyer', r.label);
   } else {
-    const { fee, label } = feeMB(val);
-    const sendDHS = roundDH(val / RATE + fee);
-    setField('top', sendDHS);
-    showResult(fDH(fee), fDH(sendDHS), 'Total à envoyer', label);
+    var r = feeMB(val);
+    var sendDHS = roundDH(val / RATE + r.fee);
+    setField(topInput, sendDHS);
+    showResult(fDH(r.fee), fDH(sendDHS), 'Total à envoyer', r.label);
   }
-}
+});
 
-function setField(which, val) {
-  computing = true;
-  document.getElementById(which + '-input').value = val;
-  computing = false;
-}
+topInput.addEventListener('focus', function() {
+  topBlock.classList.add('active');
+  botBlock.classList.remove('active');
+});
+botInput.addEventListener('focus', function() {
+  botBlock.classList.add('active');
+  topBlock.classList.remove('active');
+});
 
-function swap() {
+document.getElementById('swap-btn').addEventListener('click', function() {
   dir = dir === 'bm' ? 'mb' : 'bm';
-  const isBM = dir === 'bm';
+  var isBM = dir === 'bm';
   document.getElementById('top-flag').textContent  = isBM ? '🇧🇯' : '🇲🇦';
   document.getElementById('top-cname').textContent = isBM ? 'Bénin' : 'Maroc';
   document.getElementById('top-unit').textContent  = isBM ? 'FCFA' : 'DHS';
   document.getElementById('bot-flag').textContent  = isBM ? '🇲🇦' : '🇧🇯';
   document.getElementById('bot-cname').textContent = isBM ? 'Maroc' : 'Bénin';
   document.getElementById('bot-unit').textContent  = isBM ? 'DHS' : 'FCFA';
-  setField('top',''); setField('bot','');
+  setField(topInput, '');
+  setField(botInput, '');
   hideResult();
+});
+
+// ── Helpers ──
+function setField(el, val) {
+  computing = true;
+  el.value = val;
+  computing = false;
 }
 
 function showResult(feeStr, totalStr, totalLbl, lbl) {
@@ -503,12 +505,13 @@ function showResult(feeStr, totalStr, totalLbl, lbl) {
   document.getElementById('fee-val').textContent    = '− ' + feeStr;
   document.getElementById('total-lbl').textContent  = totalLbl;
   document.getElementById('total-val').textContent  = totalStr;
-  document.getElementById('tranche-note').innerHTML = 'Tranche : <b>' + lbl + '</b>';
+  document.getElementById('tranche').innerHTML      = 'Tranche : <b>' + lbl + '</b>';
 }
+
 function hideResult() {
   document.getElementById('fee-idle').style.display = 'block';
   document.getElementById('fee-rows').style.display = 'none';
-  document.getElementById('tranche-note').innerHTML = '';
+  document.getElementById('tranche').innerHTML      = '';
 }
 </script>
 </body>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="110" fill="#09152a"/>
+  <rect x="60" y="170" width="392" height="172" rx="28" fill="none" stroke="#c9970e" stroke-width="12"/>
+  <rect x="60" y="170" width="392" height="172" rx="28" fill="#c9970e" opacity="0.1"/>
+  <text x="256" y="300" font-size="100" text-anchor="middle" font-family="serif" fill="#f0c040">💱</text>
+  <text x="256" y="390" font-size="36" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#c9970e" letter-spacing="4">W-EXCHANGE</text>
+</svg>
