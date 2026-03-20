@@ -373,10 +373,16 @@ function fFC(n) {
 // ── Bénin→Maroc ──
 // Frais déduits du budget total (en DHS)
 function bmFromBudget(budget) {
-  if (budget <= 500) {
+  if (budget <= 150) {
+    var fee = 10;
+    return { T: budget - fee, fee: fee, label: '≤ 150 Dhs — frais fixe 10 Dhs' };
+  } else if (budget <= 250) {
+    var fee = 15;
+    return { T: budget - fee, fee: fee, label: '151 Dhs-250 Dhs — frais fixe 15 Dhs' };
+  }else if (budget <=500) {
     var fee = 25;
-    return { T: budget - fee, fee: fee, label: '≤ 500 Dhs — frais fixe 25 Dhs' };
-  } else if (budget <= 2000) {
+    return { T: budget - fee, fee: fee, label: '251 Dhs-500 Dhs — frais fixe 25 Dhs' };
+  }else if (budget <= 2000) {
     var fee = budget * 0.045;
     return { T: budget - fee, fee: fee, label: '501–2 000 Dhs — 4,5%' };
   } else {
