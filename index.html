@@ -378,7 +378,7 @@ function bmFromBudget(budget) {
     return { T: budget - fee, fee: fee, label: '≤ 150 Dhs — frais fixe 10 Dhs' };
   } else if (budget <= 300) {
     var fee = 15;
-    return { T: budget - fee, fee: fee, label: '151 Dhs-250 Dhs — frais fixe 15 Dhs' };
+    return { T: budget - fee, fee: fee, label: '151 Dhs-300 Dhs — frais fixe 15 Dhs' };
   }else if (budget <=500) {
     var fee = 25;
     return { T: budget - fee, fee: fee, label: '251 Dhs-500 Dhs — frais fixe 25 Dhs' };
